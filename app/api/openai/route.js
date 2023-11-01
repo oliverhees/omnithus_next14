@@ -1,32 +1,32 @@
-import axios from "axios";
+import OpenAI from "openai";
+import { NextResponse } from "next/server";
 
-export async function POST(req, res) {
-  try {
-    const { text } = req.body; // Hier kannst du den Text aus dem Request-Body lesen
-
-    // Deine OpenAI API-Zugangsdaten
-    const apiKey = process.env.OPENAI_API_KEY;
-
-    const response = await axios.post(
-      "https://api.openai.com/v1/engines/davinci/completions",
+export async function POST(request) {
+  const { formData } = await request.json();
+  const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY, // defaults to process.env["OPENAI_API_KEY"]
+  });
+  const chatCompletion = await openai.chat.completions.create({
+    messages: [
       {
-        prompt: text,
-        max_tokens: 50, // Anpassen, je nach Bedarf
+        role: "user",
+        content: `Say this is a test and give a Answer of this Question: ${formData}`,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    ],
+    model: "gpt-3.5-turbo",
+  });
+  console.log(chatCompletion.choices[0].message.content);
 
-    const { choices } = response.data;
-    const generatedText = choices[0].text;
+  return NextResponse.json(
+    { message: chatCompletion.choices[0].message.content },
+    { status: 200 }
+  );
+}
 
-    res.status(200).json({ generatedText });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Fehler beim Senden der Anfrage an OpenAI" });
-  }
+/*Get all templates*/
+export async function GET(request, { params }) {
+  const { id } = params;
+  await connectMongoDB();
+  const templates = await Template.findOne({ _id: id });
+  return NextResponse.json({ templates }, { status: 200 });
 }
