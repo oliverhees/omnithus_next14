@@ -2,7 +2,7 @@ import OpenAI from "openai";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
-  const { formData } = await request.json();
+  const { templateOutput } = await request.json();
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY, // defaults to process.env["OPENAI_API_KEY"]
   });
@@ -10,7 +10,7 @@ export async function POST(request) {
     messages: [
       {
         role: "user",
-        content: `Say this is a test and give a Answer of this Question: ${formData}`,
+        content: `${templateOutput}`,
       },
     ],
     model: "gpt-3.5-turbo",

@@ -1,5 +1,4 @@
 import PromptAnalyser from "app/components/PromptAnalyser";
-import CallOpenAi from "app/components/CallOpenAi";
 
 const getTemplateById = async (id) => {
   try {
@@ -39,15 +38,10 @@ export default async function usePrompt({ params }) {
           <h1 className="text-2xl py-4">{name}</h1>
           <div className="gab-4">
             {variables.length > 0 && (
-              <PromptAnalyser
-                prompt={prompt}
-                variables={variables}
-                //onSubmit={handleVariableSubmit}
-              />
+              <PromptAnalyser prompt={prompt} variables={variables} />
             )}
           </div>
         </div>
-        <CallOpenAi />
       </div>
     );
   } else {
