@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import PromptAnalyser from "app/components/PromptAnalyser";
 
 const AddPromptTemplate = () => {
   const [name, setName] = useState("");

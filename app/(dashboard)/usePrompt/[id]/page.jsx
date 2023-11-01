@@ -1,4 +1,5 @@
 import PromptAnalyser from "app/components/PromptAnalyser";
+import CallOpenAi from "app/components/CallOpenAi";
 
 const getTemplateById = async (id) => {
   try {
@@ -46,6 +47,7 @@ export default async function usePrompt({ params }) {
             )}
           </div>
         </div>
+        <CallOpenAi />
       </div>
     );
   } else {
